@@ -18,7 +18,10 @@ router.post('/', function(req, res, next) {
   if (password == "Secret123") {
     // kod för att kolla uppgifter med db
     // om login rätt sätt session
-    res.send('Topsecret!');
+    req.session.loggedin = true;
+    req.session.username = username;
+    res.render('/topsecret');
+
   } else {
     // kommentera ut vid felsökning
     res.render(

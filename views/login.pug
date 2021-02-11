@@ -1,18 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  
-if error 
-    p= error
+    h1= title
+    p Welcome to #{title}
 
- form(action="login\", method="post")
-    div
-     label(for="username") username: 
-     input#username(type="text", name"username")
-    div
-     label(for="password") password: 
-     input#password(type="password", name"password")
-  
-  button(type="submit") login
+    if error 
+        p= error
+
+    form(action="/login", method="post")
+        div
+            label(for="username") username: 
+            input#username(type="text", name="username")
+        div
+            label(for="password") password: 
+            input#password(type="password", name="password")
+
+        button(type="submit") login
