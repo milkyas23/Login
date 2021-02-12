@@ -15,11 +15,13 @@ router.post('/', function(req, res, next) {
   const username = req.body.username;
   const password = req.body.password;
 
-  if (password == "Secret123") {
+  if (password == "123") {
     // kod för att kolla uppgifter med db
     // om login rätt sätt session
-   
-    res.render('/topsecret');
+
+    req.session.loggedin= true;
+    req.session.username=username;
+    res.redirect('/topsecret');
 
   } else {
     // kommentera ut vid felsökning
