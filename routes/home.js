@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* GET topsecret page. */
-router.get('/topsecret', function(req, res, next) {
+router.get('/', function(req, res, next) {
   if (req.session.loggedin) {
     res.send('Du är inlogad'); 
   } else{
