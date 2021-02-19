@@ -60,21 +60,22 @@ describe('/login', () => {
 });
 
 describe('/home', () => {
-  describe('GET /', () => {
-    it('should return OK status', () => {
-      request.get('/home')
-        .expect(200)
-        .end((err, res) => {
-          if (err) throw err;
-        });
-    });
+  //describe('GET /', () => {
+    //it('should return OK status', () => {
+      //request.get('/home')
+        //.expect(200)
+        //.end((err, res) => {
+          //if (err) throw err;
+        //});
+    //});
 
-    it('should return message on rendering', () => {
+    it('should redirect unauthorized user to /login', () => {
       request.get('/home')
+        .expect(302)
+        .expect('Location', '/home')
         .end((err, res) => {
           if (err) throw err;
           expect(res.text).to.contain('Please login to view this page!');
         });
     });
   });
-});

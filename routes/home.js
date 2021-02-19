@@ -4,9 +4,9 @@ var router = express.Router();
 /* GET topsecret page. */
 router.get('/', function(req, res, next) {
   if (req.session.loggedin) {
-    res.send('Du är inlogad'); 
+    res.render('home'); 
   } else{
-  res.render('please login to view this page!');
+    res.redirect('/login');
   }
 });
 
