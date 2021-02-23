@@ -11,10 +11,14 @@ block content
 
   form(action="/login", method="post")
     div
-      label(for="username") username: 
+      .mb-3
+      label.form-label(for="username") username: 
       input#username(type="text", name="username")
+      
+    .mb-3    
     div
       label(for="password") password: 
       input#password(type="password", name="password")
 
-    button(type="submit") login
+    
+    button.btn.btn-outline-primary(type="submit") Login
