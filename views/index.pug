@@ -1,5 +1,75 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  main.container.pt-5
+    h1= title
+    p Welcome to #{title}
+
+    h2.pt-3 Vad behöver du kunna nu 
+    ul
+      li Förstå hur node express fungerar
+      li Förstå hur webbservern och klienten samspelar
+      li Routes
+        ul 
+          li Skapa nya, redigera
+          li GET / POST 
+      li Views 
+        ul 
+          li Förstå PUG 
+          li layout och hur det funkar med extends 
+          li Skapa nya, redigera 
+      li Frontend 
+        ul 
+          li Styla och designa sidan 
+      li Controllers 
+        ul 
+          li Förstå att logiken kan flyttas från routes 
+      li SQL 
+        ul 
+          li CRUD
+          li Kunna skriva korrekt SQL
+          li Kunna använda mysql i express
+      li http och säkerhet 
+        ul 
+          li Förstå vad den session och en cookie är
+          li Förstå några status meddelanden 
+          li Kunna validera och tvätta data 
+      li Tests 
+        ul
+          li Förstå syftet och kunna använda 
+          li Kunna felsöka med hjälp av tests
+
+    h2.pt-3 Todo
+    p Följande är uppgifter du kan ta dig an för att visa att du behärskar 
+      | ovan nämnda moment.
+    ul
+      li Home sidan 
+        ul 
+          li Delete user (D i crud, formhantering, controller, pug)
+          li Byta username och eller password (U i crud, formulär, controller, pug)
+          li Ladda upp en avatar (För den som vill bli utmanad)
+      li Pug
+        ul
+          li Fixa title, navsidor och active page (pug, express)
+
+      li Felhantering och UX
+        ul
+          li Registrering, vettig felmeddelanden (pug, express, scss)
+      li Nav och meny, inte visa logout/home för den som inte är inloggad (pug, express)
+      li Frontend 
+        ul
+          li Style, använda scss + bootstrap för att få sidan att se ut som något. (html, css, scss)
+          li Använda figma, gör en layout(du får ett uppdrag) 
+            a(href="https://elements.envato.com/graphic-templates/login/compatible-with-figma") Logintemplater
+          li Kopiera en sida
+      li Tester (visar på god förståelse av systemet)
+        ul 
+          li Det finns ett stort antal tester att skriva för den som vill 
+          li Tester för registrering, inloggning för att testa felmeddelanden 
+          li Tester för cookies/session 
+      li Frontend validation / 
+        a(href='https://getbootstrap.com/docs/5.0/forms/validation/') bootstrap 
+        | (svårt, men bra kunskap att ha)
+      li Felmedelanden, toasts / 
+        a(href='https://getbootstrap.com/docs/5.0/components/alerts/') alerts 
+        | (använda UX för att förbättra upplevelsen)

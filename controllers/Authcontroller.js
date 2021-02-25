@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const { query } = require('../models/db');
 const { body, validationResult } = require('express-validator');
+const { log } = require('debug');
 
 module.exports.show = async function(req, res, next) {
   if (req.session.loggedin) {
@@ -24,10 +25,13 @@ module.exports.store = async function(req, res, next) {
     }
     const username = req.body.username;
     const password = req.body.password;
+    console.log("Tja!")
 
     try {
       const sql = 'SELECT id, password FROM users WHERE name = ?';
       const user = await query(sql, username);
+      
+
 
       if(user.length > 0) {
         bcrypt.compare(password, user[0].password, function(err, result) {
@@ -41,6 +45,7 @@ module.exports.store = async function(req, res, next) {
               const hour = 3600000;
               req.session.cookie.maxAge = 14 * 24 * hour; //2 weeks
             }
+
 
             res.redirect('/home');
           } else {
