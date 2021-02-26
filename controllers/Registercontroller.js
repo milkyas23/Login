@@ -30,8 +30,15 @@ module.exports.store = async function(req, res, next) {
         }
 
       } catch (e) {
-        next(e);
-        console.error(e);
+        console.table(e);
+        if (e.errno === 1062) {
+          return res.render('register', {
+            username: e.sqlMessage.includes('users.name') ? 'Duplicate entry' : null,
+            email: e.sqlMessage.includes('users.email') ? 'Duplicate entry' : null,
+          });
+        } else {
+          next(e);
+        }
       }
     });
 };
@@ -47,8 +54,9 @@ module.exports.destroy = async function(req, res, next) {
 };
 
 module.exports.update = async (req, res, next) => {
-  const id = req.params.id; // vi vill ha ett user id, men vi behöver kolla så den usern faktiskt är inloggad
-  if (id === req.session.userid) {
+  const id = req.session.userid; // vi vill ha ett user id, men vi behöver kolla så den usern faktiskt är inloggad
+  console.table(req.body);
+  if (id) {
     // vi kan behöva sätta userid vid inlog
     // för extra säkerhet så kräv password vid ändring av username/password
     // byta username

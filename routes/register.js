@@ -3,12 +3,12 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const registercontroller = require('../controllers/Registercontroller');
 
-/* GET Login form. */
+/* GET login form */
 router.get('/', registercontroller.show);
 
-/* GET topsecret page. */
+/* POST login */
 router.post('/',
-  body('username').notEmpty().trim().toLowerCase(),
+  body('username').notEmpty().trim(),
   body('email').notEmpty().isEmail().trim().toLowerCase(),
   body('password').notEmpty(),
   body('passwordconfirmation').custom((value, { req }) => {
