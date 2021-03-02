@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { query } = require('../models/db');
+const { query } = require('../models/db.model');
 const { body, validationResult } = require('express-validator');
 const { log } = require('debug');
 
@@ -37,7 +37,6 @@ module.exports.store = async function(req, res, next) {
             req.session.loggedin = true;
             req.session.username = username;
             req.session.id = user[0].id;
-            req.session.username = username;
 
             if ( req.body.rememberme ) {
               const hour = 3600000;

@@ -7,10 +7,11 @@ const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('express-session');
 
-const indexRouter = require('./routes/index');
-const loginRouter = require('./routes/login');
-const homeRouter = require('./routes/home');
-const registerRouter = require('./routes/register');
+const indexRouter = require('./routes/index.route');
+const loginRouter = require('./routes/login.route');
+const homeRouter = require('./routes/home.route');
+const registerRouter = require('./routes/register.route');
+const meepsRouter = require('./routes/meeps.route');
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/home', homeRouter);
 app.use('/register', registerRouter);
+app.use('/meeps', meepsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

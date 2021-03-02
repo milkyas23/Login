@@ -1,74 +1,74 @@
 const expect = require('chai').expect;
 const app = require('../app');
-// const request = require('supertest');
-const session = require('supertest-session')(app);
+const request = require('supertest')(app);
+// const session = require('supertest-session')(app);
+const { query } = require('../models/db.model');
 
-// const testSession = null;
-
-describe('/home', () => {
-  let authenticatedSession = null;
-
-  beforeEach((done) => {
-    session.post('/login')
-      .type('form')
-      .send({
-        username: process.env.TEST_USER,
-        password: process.env.TEST_PASSWORD
-      })
-      .expect(302)
-      .end(function (err) {
-        if (err) return done(err);
-        authenticatedSession = session;
-        return done();
-      });
-  });
-
-  it('should get a restricted page', function (done) {
-    authenticatedSession.get('/home')
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.text).to.contain(process.env.TEST_USER);
-        return done();
-      });
-  });
-
-  it('should log out a user', function (done) {
-    authenticatedSession.post('/logout')
-      .expect(302)
-      .end(done);
-  });
-
-  it('should let the user delete account', (done) => {
-    authenticatedSession.get('/home/delete')
-    .expect(200)
-    .end((err, res) => {
-      if (err) return done(err);
-      expect(res.text).to.contain('Confirm account deletion');
-      authenticatedSession.post('/home/delete')
-        .type('form')
-        .send({
-          confirm: true
-        })
-        .expect(302)
+describe('/register', () => {
+  describe('GET /', () => {
+    it('should return OK status', () => {
+      request.get('/register')
+        .expect(200)
         .end((err, res) => {
-          if (err) return done(err);
-          return done();
+          if (err) throw err;
         });
     });
   });
 
-  it('should let the user change name', (done) => {
-    authenticatedSession.post('/home/edit')
-      .type('form')
-      .send({
-        newusername: 'newname'
-      })
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.text).to.contain('newname');
-        return done();
-      });
+  describe('POST /', () => {
+    before('delete user', async () => {
+      // await query('truncate table meals');
+      await query('DELETE FROM users WHERE email = ?', process.env.TEST_EMAIL);
+    });
+
+    it('should register a new user provided it has a correct request body', (done) => {
+      request.post('/register')
+        .type('form')
+        .send({
+          username: process.env.TEST_USER,
+          email: process.env.TEST_EMAIL,
+          password: process.env.TEST_PASSWORD,
+          passwordconfirmation: process.env.TEST_PASSWORD
+        })
+        .expect(200)
+        .end((err, res) => {
+          if (err) throw err;
+          return done();
+        });
+    });
+
+    it('should fail to register a user when passwords do not match', (done) => {
+      request.post('/register')
+        .type('form')
+        .send({
+          username: process.env.TEST_USER,
+          email: process.env.TEST_EMAIL,
+          password: process.env.TEST_PASSWORD,
+          passwordconfirmation: 'fel-passWord123'
+        })
+        .expect(400)
+        .end((err, res) => {
+          if (err) throw err;
+          expect(res.text).to.contain('Passwords do not match.');
+          return done();
+        });
+    });
+
+    it('should fail to register a user with an invalid email address', (done) => {
+      request.post('/register')
+        .type('form')
+        .send({
+          username: process.env.TEST_USER,
+          email: 'dettaär@inteokej',
+          password: process.env.TEST_PASSWORD,
+          passwordconfirmation:  process.env.TEST_PASSWORD
+        })
+        .expect(400)
+        .end((err, res) => {
+          if (err) throw err;
+          expect(res.text).to.contain('Email is invalid or unavailable.');
+          return done();
+        });
     });
   });
+});

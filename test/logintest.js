@@ -1,15 +1,9 @@
-// npm install mocha chai supertest --save-dev
-// mkdir test
-// save logintest.js
-// package.json
-// "test": "mocha -r dotenv/config --timeout 10000 --exit"
-
 const expect = require('chai').expect;
 const app = require('../app');
 const request = require('supertest')(app);
+const session = require('supertest-session')(app);
 
 describe('/login', () => {
-
   describe('GET /', () => {
     it('should return OK status', () => {
       request.get('/login')
@@ -27,6 +21,28 @@ describe('/login', () => {
           return done();
         });
     });
+    
+    // detta test bör även köras på register om inloggad
+    it('should show home if user is logged in', (done) => {
+      let authenticatedSession = null;
+      session.post('/login')
+        .type('form')
+        .send({
+          username: process.env.TEST_USER,
+          password: process.env.TEST_PASSWORD
+        })
+        .expect(302)
+        .end((err) => {
+            if (err) return done(err);
+            authenticatedSession = session;
+            authenticatedSession.get('/login')
+            .expect(302)
+            .end((err, res) => {
+              if (err) return done(err);
+              return done();
+            });
+          });
+      });
   });
 
   describe('POST /', () => {
@@ -34,7 +50,7 @@ describe('/login', () => {
       request.post('/login')
         .type('form')
         .send({
-          username: process.env.TEST_USER, 
+          username: process.env.TEST_USER,
           password: process.env.TEST_PASSWORD
         })
         .expect(302)
@@ -49,31 +65,11 @@ describe('/login', () => {
       request.post('/login')
         .type('form')
         .send({username: '', password: ''})
-        .expect(200)
+        .expect(400)
         .end((err, res) => {
           if (err) throw err;
           expect(res.text).to.contain('Username or password is invalid');
           return done();
-        });
-    });
-  });
-});
-
-describe('/home', () => {
-  describe('GET /', () => {
-    it('should return OK status', () => {
-      request.get('/home')
-        .expect(200)
-        .end((err, res) => {
-          if (err) throw err;
-        });
-    });
-
-    it('should return message on rendering', () => {
-      request.get('/home')
-        .end((err, res) => {
-          if (err) throw err;
-          expect(res.text).to.contain('Please login to view this page!');
         });
     });
   });
