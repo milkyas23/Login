@@ -1,0 +1,11 @@
+extends layout 
+
+block content 
+
+  each meep in meeps 
+    div
+      p= meep.body 
+      p by: #{meep.author}
+      form(action="/meeps/delete", method="post") 
+        input(type="hidden", name="meepid" value= meep.id)
+        button(type="submit") X
