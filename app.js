@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('express-session');
+const flash = require('connect-flash');
 
 const indexRouter = require('./routes/index.route');
 const loginRouter = require('./routes/login.route');
@@ -35,6 +36,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: {samesite: true}
 }));
+app.use(flash());
 
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
