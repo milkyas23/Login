@@ -1,0 +1,12 @@
+extends layout 
+
+block content 
+  if meep 
+    form(action="/meeps/update", method="post") 
+      input(type="hidden", name="meepid" value= meep.id)
+      textarea#body(name="body", cols="30", rows="10")= meep.body
+      button(type="submit") Update meep
+  else
+    form(action="/meeps", method="post") 
+      textarea#body(name="body", cols="30", rows="10") 
+      button(type="submit") Post meep
