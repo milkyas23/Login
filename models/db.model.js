@@ -2,10 +2,10 @@ const mysql = require('mysql');
 
 const pool = mysql.createPool({
   connectionLimit: 10,
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_DATABASE
+  host: process.env.localhost,
+  user: process.env.milkyas8,
+  password: process.env.Milkyas8,
+  database: process.env.Database
 });
 
 function query (sql, params) {
